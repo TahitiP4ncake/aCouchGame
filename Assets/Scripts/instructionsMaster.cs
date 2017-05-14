@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class instructionsMaster : MonoBehaviour {
 
+	#region Variables
     //4 SPACE TEXT
     public Text red;
     public Text blue;
@@ -13,6 +14,7 @@ public class instructionsMaster : MonoBehaviour {
 
     public int numberOfPlayer;
 
+	//max number of bodyparts available in the players
     private int hands;
     private int foots;
     private int butts;
@@ -47,13 +49,8 @@ public class instructionsMaster : MonoBehaviour {
     //Dictionary<string, int> dictionary = new Dictionary<string, int>();
 
     private bool display;
+	#endregion
 
-
-    void Start () {
-        
-        
-	}
-	
 	void playerSelection()
     {
         red.text = "2 Players";
@@ -61,8 +58,10 @@ public class instructionsMaster : MonoBehaviour {
         green.text = "4 Players";
         yellow.text = "5 Players";
     }
-	void Update () {
 
+	void Update () 
+	{
+		//Dans l'update ?!! sauvage
         hands = numberOfPlayer * 2;
         foots = numberOfPlayer * 2;
         butts = numberOfPlayer;
@@ -99,6 +98,15 @@ public class instructionsMaster : MonoBehaviour {
                 StartGame();
             }
         }
+
+		if (Input.GetKeyDown(KeyCode.U))
+			Debug.Log (WeightedRandom(5, 9));
+		
+		if (Input.GetKeyDown(KeyCode.I))
+		{
+			int[] i = GenerateBodyParts(3);
+			Debug.Log(i[0] + " butts, " + i[1] + " feet, " + i[2] + " hands");
+		}
     }
     /*
     void Order()
@@ -313,4 +321,26 @@ public class instructionsMaster : MonoBehaviour {
         }
     }
     */
+
+	int[] GenerateBodyParts (int players)
+	{
+		int minButts = 0;
+		int maxButts = players - 1;
+		int actualButts = WeightedRandom(minButts, maxButts);
+
+		int minFeet = players - 1 - actualButts;
+		int maxFeet = 2*players - 1 - actualButts;
+		int actualFeet = WeightedRandom(minFeet, maxFeet);
+
+		int minHands = Mathf.Max(0, players - actualButts - actualFeet);
+		int maxHands = 2*players;
+		int actualHands = WeightedRandom(minHands, maxHands);
+
+		return new int[] {actualButts, actualFeet, actualHands};
+	}
+
+	int WeightedRandom (int min, int max)
+	{
+		return (int) (min + Mathf.Pow((Random.value*Mathf.Sqrt(max - min + 1)), 2));
+	}
 }
