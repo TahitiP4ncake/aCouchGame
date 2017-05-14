@@ -107,6 +107,19 @@ public class instructionsMaster : MonoBehaviour {
 			int[] i = GenerateBodyParts(3);
 			Debug.Log(i[0] + " butts, " + i[1] + " feet, " + i[2] + " hands");
 		}
+
+		if (Input.GetKeyDown(KeyCode.O))
+			{
+				int[,] a = GenerateBodyPartsWithColors(3);
+				Debug.Log
+				(
+				"RED : " + a[0, 0] + " butts, " + a[0, 1] + " feet, " + a[0, 2] + " hands              " +
+				"GREEN : " + a[2, 0] + " butts, " + a[2, 1] + " feet, " + a[2, 2] + " hands \n" +
+				"BLUE : " + a[1, 0] + " butts, " + a[1, 1] + " feet, " + a[1, 2] + " hands             " +
+					"YELLOW : " + a[3, 0] + " butts, " + a[3, 1] + " feet, " + a[3, 2] + " hands "
+				);
+
+			}
     }
     /*
     void Order()
@@ -342,5 +355,50 @@ public class instructionsMaster : MonoBehaviour {
 	int WeightedRandom (int min, int max)
 	{
 		return (int) (min + Mathf.Pow((Random.value*Mathf.Sqrt(max - min + 1)), 2));
+	}
+
+	int[,] GenerateBodyPartsWithColors (int players)
+	{
+		int[,] outcome = new int[4,3];
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 3; j++)
+				outcome[i,j] = 0;
+
+		int [] bodyParts = GenerateBodyParts(players);
+
+		//butts
+		for (int i = 0; i < bodyParts[0]; i++)
+			if (Random.Range(0, 4) == 0)
+				outcome[0, 0] ++;
+			else if (Random.Range(0, 3) == 0)
+				outcome[1, 0] ++;
+			else if (Random.Range(0, 2) == 0)
+				outcome[2, 0] ++;
+			else
+				outcome[3, 0] ++;
+		
+		//feet
+		for (int i = 0; i < bodyParts[1]; i++)
+			if (Random.Range(0, 4) == 0)
+				outcome[0, 1] ++;
+			else if (Random.Range(0, 3) == 0)
+				outcome[1, 1] ++;
+			else if (Random.Range(0, 2) == 0)
+				outcome[2, 1] ++;
+			else
+				outcome[3, 1] ++;
+		
+		//hands
+		for (int i = 0; i < bodyParts[2]; i++)
+			if (Random.Range(0, 4) == 0)
+				outcome[0, 2] ++;
+			else if (Random.Range(0, 3) == 0)
+				outcome[1, 2] ++;
+			else if (Random.Range(0, 2) == 0)
+				outcome[2, 2] ++;
+			else
+				outcome[3, 2] ++;
+
+		return outcome;
 	}
 }
