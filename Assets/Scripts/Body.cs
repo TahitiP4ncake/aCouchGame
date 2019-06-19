@@ -11,6 +11,15 @@ public class Body {
         this.parts = parts;
     }
 
+    public Body (int hands, int feet, int butts, int heads) {
+        this.parts = new List<BodyPart> () {
+            new BodyPart (BodyPartType.HANDS, hands),
+            new BodyPart (BodyPartType.FEET, feet),
+            new BodyPart (BodyPartType.BUTTS, butts),
+            new BodyPart (BodyPartType.HEADS, heads)
+        } ;
+    }
+
     public Body (int nothing) {
         this.parts = new List<BodyPart> () {
             new BodyPart (BodyPartType.HANDS, 0),
