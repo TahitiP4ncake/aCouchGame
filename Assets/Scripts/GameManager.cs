@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     public int amountOfPlayers;
-    public Couch couch;
+    public Couch couch = instance.GetCouch();
     private int maxBodyParts = 4;
 
     private static  GameManager _instance;
@@ -25,17 +25,24 @@ public class GameManager : MonoBehaviour {
         if (_instance != this) Destroy(this);
     }
 
-    private void GetCouch () {
-        Body allPlayers = new Body (
-            2*amountOfPlayers, 
-            2*amountOfPlayers, 
-            1*amountOfPlayers, 
-            1*amountOfPlayers
-        );
-        couch = Split(allPlayers);
+    private Couch GetCouch () {
+        return Split(RandomBody(0, amountOfPlayers*6));
     }
 
-    private Couch Split (Body allParts) { //Repartit au hasard une liste de bodypart dans un couch
+    // Generates a random body containing min to max bodyparts
+    // TODO : add rules for max value for each bodypart
+    private Body RandomBody (int minParts, int maxParts) {
+        Body body = new Body (0, 2, 0, 0); //2 feet for stability
+
+        int parts = Random.Range (minParts, maxParts+1);
+        for (int i=0; i<parts; i++) {
+            body.parts[Random.Range(0, 4)].amount ++;
+        }
+
+        return body;
+    }
+    // Repartit au hasard une liste de bodypart dans un couch
+    private Couch Split (Body allParts) { 
         Couch tmp = new Couch (0);
 
         for (int i=0; i<maxBodyParts; i++) { //Pour chaque type de bodypart
