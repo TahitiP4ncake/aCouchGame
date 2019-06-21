@@ -15,12 +15,25 @@ public class BodyPart {
         this.amount = amount;
     }
 
-    public static List<BodyPart> FullHumans (int amountOfHumans) {
-        return new List<BodyPart> () {
-            new BodyPart (BodyPartType.HANDS, 2*amountOfHumans),
-            new BodyPart (BodyPartType.FEET, 2*amountOfHumans),
-            new BodyPart (BodyPartType.BUTTS, 1*amountOfHumans),
-            new BodyPart (BodyPartType.HEADS, 1*amountOfHumans)
-        } ;
+    public string Display () {
+        string result = "";
+
+        if (amount == 0) return result;
+        else {
+            result = amount + " ";
+            if (amount == 1) {
+                if (type == BodyPartType.HANDS) result += " hand";
+                if (type == BodyPartType.FEET) result += " foot";
+                if (type == BodyPartType.BUTTS) result += " butt";
+                if (type == BodyPartType.HEADS) result += " head";
+            } else {
+                if (type == BodyPartType.HANDS) result += " hands";
+                if (type == BodyPartType.FEET) result += " feet";
+                if (type == BodyPartType.BUTTS) result += " butts";
+                if (type == BodyPartType.HEADS) result += " heads";
+            }
+        }
+
+        return result;
     }
 }

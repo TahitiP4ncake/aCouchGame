@@ -1,11 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
     public int amountOfPlayers;
     public Couch couch = instance.GetCouch();
-    private int maxBodyParts = 4;
+
+    public const int maxBodyParts = 4;
+    public const int maxCushions = 4;
+    public Body maxParts {
+        get {
+            return new Body (
+                2*amountOfPlayers,
+                2*amountOfPlayers,
+                amountOfPlayers,
+                amountOfPlayers
+            );
+        }
+    }
 
     private static  GameManager _instance;
     public static GameManager instance {
@@ -13,8 +26,7 @@ public class GameManager : MonoBehaviour {
             if (instance == null) {
                 GameObject go = new GameObject();
                 go.name = "Game Manager";
-                go.AddComponent<GameManager>();
-                _instance = go.GetComponent<GameManager>();
+                _instance = go.AddComponent<GameManager>();
             }
             return _instance;
         }
@@ -26,29 +38,48 @@ public class GameManager : MonoBehaviour {
     }
 
     private Couch GetCouch () {
-        return Split(RandomBody(0, amountOfPlayers*6));
+        return Split(RandomBody(0, maxParts.amountOfParts));
     }
 
     // Generates a random body containing min to max bodyparts
-    // TODO : add rules for max value for each bodypart
-    private Body RandomBody (int minParts, int maxParts) {
+    private Body RandomBody (int min, int max) {
         Body body = new Body (0, 2, 0, 0); //2 feet for stability
 
-        int parts = Random.Range (minParts, maxParts+1);
-        for (int i=0; i<parts; i++) {
-            body.parts[Random.Range(0, 4)].amount ++;
+        if (max > maxParts.amountOfParts) {
+            Debug.LogError ("Error : You're trying to put too many body parts ("+max+") in the couch ("+
+            maxParts.amountOfParts+" body parts total)");
+        } else {
+            int amountOfPartsToSplit = Random.Range (min, max+1);
+
+            // List is {0, 1, 2, 3... }
+            List<int> possibleParts = new List<int>();
+            for (int i=0; i<maxBodyParts; i++) {
+                possibleParts.Add(i);
+            }
+
+            for (int i=0; i<amountOfPartsToSplit; i++) {
+                int randomPartIndex = Random.Range(0, possibleParts.Count);
+                BodyPart randomPart = body.parts[possibleParts[randomPartIndex]];
+
+                randomPart.amount ++;
+
+                if (randomPart.amount >= maxParts.AmountOf(randomPart.type)) {
+                    possibleParts.RemoveAt(randomPartIndex);
+                }
+            }
         }
 
         return body;
     }
+    
     // Repartit au hasard une liste de bodypart dans un couch
     private Couch Split (Body allParts) { 
         Couch tmp = new Couch (0);
 
         for (int i=0; i<maxBodyParts; i++) { //Pour chaque type de bodypart
-            for (int j=0; j<allParts.parts[i].amount; j++) { //Pour chaque bodypart de ce type dans l'argument
-                int ran = Random.Range(0,maxBodyParts);
-                tmp.cushions[ran].parts[i].amount ++; //Augmenter de 1 le nb de bodyparts d'un coussin random
+            for (int j=0; j<allParts.parts[i].amount; j++) { //Pour chaque bodypart de ce type
+                int ran = Random.Range(0,maxCushions);
+                tmp.cushions[ran].parts[i].amount ++; //Ajouter le même bodypart a un coussin random du resultat
             }
         }
 
