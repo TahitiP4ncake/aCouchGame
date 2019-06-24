@@ -4,8 +4,17 @@ using UnityEngine;
 using System.Linq;
 
 public class GameManager : MonoBehaviour {
+    //TODO
+    //add a couchManager, split with current GameManager
+    //import monosingleton
+    //jeter un coup d'oeil à l'interface ?
+    //Rename body to cushion
+    //Playtest pour la difficulté => préparer différents niveaux ?
+    //Options : faire un settingsManager, backend pour retirer des bodyParts
+    //Structure dans le code......
+
     public int amountOfPlayers;
-    public Couch couch = instance.GetCouch();
+    public Couch couch;
 
     public const int maxBodyParts = 4;
     public const int maxCushions = 4;
@@ -37,8 +46,8 @@ public class GameManager : MonoBehaviour {
         if (_instance != this) Destroy(this);
     }
 
-    private Couch GetCouch () {
-        return Split(RandomBody(0, maxParts.amountOfParts));
+    public void NewCouch () {
+        instance.couch = Split(RandomBody(0, maxParts.amountOfParts));
     }
 
     // Generates a random body containing min to max bodyparts

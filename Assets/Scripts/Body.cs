@@ -27,12 +27,14 @@ public class Body {
     public BodyPart butts { get { return Part(2); } }
     public BodyPart heads { get { return Part(3); } }
 
+    //The total amount of parts in this Body
     public int amountOfParts { get { return parts.Select(x => x.amount).ToList().Sum(); } }
 
+    //Display the list of all BodyParts (1 per line)
     public string Display () {
         string result = "";
 
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<GameManager.maxBodyParts; i++) {
             string part = Part(i).Display();
             if (result != "" && part != "") result += "\n";
             result += part;
@@ -41,6 +43,7 @@ public class Body {
         return result;
     }
 
+    //Shortcut to the amount of a certain BodyPart
     public int AmountOf (BodyPartType type) {
         if (type == BodyPartType.HANDS) return hands.amount;
         if (type == BodyPartType.FEET) return feet.amount;

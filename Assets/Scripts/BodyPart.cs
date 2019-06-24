@@ -15,11 +15,11 @@ public class BodyPart {
         this.amount = amount;
     }
 
+    //Rend le bodyPart sous forme de texte (p.e. "4 feet")
     public string Display () {
         string result = "";
 
-        if (amount == 0) return result;
-        else {
+        if (amount > 0) {
             result = amount + " ";
             if (amount == 1) {
                 if (type == BodyPartType.HANDS) result += " hand";
