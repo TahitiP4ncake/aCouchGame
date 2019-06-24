@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FlowManager : MonoBehaviour {
-    public enum S = { MENU, PLAY }
+    public enum S { MENU, PLAY };
     public S state = S.MENU;
+
+    public static FlowManager instance;
 
     private void Update () {
         if (state == S.MENU && Input.touchCount == 1) {

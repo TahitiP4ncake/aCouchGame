@@ -7,6 +7,7 @@ using System.Linq;
 public class Body {
     // 0 = hands, 1 = feet, 2 = butts, 3 = heads
     public List<BodyPart> parts;
+    private GameManager gm { get { return GameManager.instance; } }
 
     public Body (int hands, int feet, int butts, int heads) {
         this.parts = new List<BodyPart> () {
@@ -17,8 +18,17 @@ public class Body {
         } ;
     }
 
-    private BodyPart Part (int n) {
+    public  BodyPart Part (int n) {
         if (parts.Count > n) return parts[n];
+        return null;
+    }
+
+    public BodyPart Part (BodyPartType type) {
+        if (type == BodyPartType.HANDS) return hands;
+        if (type == BodyPartType.FEET) return feet;
+        if (type == BodyPartType.BUTTS) return butts;
+        if (type == BodyPartType.HEADS) return heads;
+        Debug.LogError("Error : type not found");
         return null;
     }
 
@@ -30,11 +40,14 @@ public class Body {
     //The total amount of parts in this Body
     public int amountOfParts { get { return parts.Select(x => x.amount).ToList().Sum(); } }
 
+    //Returns a classic human body (2 hands, 2 feet, 1 head, 1 butt)
+    public static Body classicHuman { get { return new Body (2, 2, 1, 1); } }
+
     //Display the list of all BodyParts (1 per line)
     public string Display () {
         string result = "";
 
-        for (int i=0; i<GameManager.maxBodyParts; i++) {
+        for (int i=0; i<gm.maxBodyParts; i++) {
             string part = Part(i).Display();
             if (result != "" && part != "") result += "\n";
             result += part;

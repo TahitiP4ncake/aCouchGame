@@ -7,14 +7,27 @@ using System.Linq;
 public class Couch {
     // 0 = left armrest, 1 = left cushion, 2 = right cushion, 3 = right armrest
     public List<Body> cushions;
+    private GameManager gm { get { return GameManager.instance; } }
 
-    public Couch (int nothing) {
-        this.cushions = new List<Body> () {
-            new Body (0, 0, 0, 0),
-            new Body (0, 0, 0, 0),
-            new Body (0, 0, 0, 0),
-            new Body (0, 0, 0, 0)
-        } ;
+    public Couch () {
+        this.cushions = new List<Body> ();
+        for (int i=0; i<gm.maxBodyParts; i++) {
+            cushions.Add(new Body (0, 0, 0, 0));
+        } 
+    }
+
+    public Couch (int players) {
+        this.cushions = new List<Body> ();
+        for (int i=0; i<players; i++) {
+            cushions.Add(new Body (0, 0, 0, 0));
+        } 
+    }
+
+    public Couch (Body body) {
+        this.cushions = new List<Body> ();
+        for (int i=0; i<gm.maxBodyParts; i++) {
+            cushions.Add(body);
+        } 
     }
 
     public Body Cushion (int n) {
@@ -36,8 +49,10 @@ public class Couch {
     public Body Aggregate () {
         Body result = new Body (0, 0, 0, 0);
 
-        for (int i=0; i<GameManager.maxBodyParts; j++) {
-            result.parts(i).amount += cushions.Select(x => x.parts(i).amount).ToList().Sum();
+        for (int i=0; i<gm.maxBodyParts; i++) {
+            result.Part(i).amount += cushions.Select(x => x.Part(i).amount).ToList().Sum();
         }
+
+        return result;
     }
 }
