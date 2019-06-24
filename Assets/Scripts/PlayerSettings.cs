@@ -8,6 +8,13 @@ public class PlayerSettings : MonoBehaviour {
 
     public Couch players;
 
+    public Difficulty easy;
+    public Difficulty medium;
+    public Difficulty hard;
+
+    [HideInInspector]
+    public Difficulty difficulty;
+
     public void InitiatePlayers () {
         players = new Couch (gm.amountOfPlayers);
     }

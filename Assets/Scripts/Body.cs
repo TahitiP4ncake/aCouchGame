@@ -18,6 +18,15 @@ public class Body {
         } ;
     }
 
+    public Body () {
+        this.parts = new List<BodyPart> () {
+            new BodyPart (BodyPartType.HANDS, 0),
+            new BodyPart (BodyPartType.FEET, 0),
+            new BodyPart (BodyPartType.BUTTS, 0),
+            new BodyPart (BodyPartType.HEADS, 0)
+        } ;
+    }
+
     public  BodyPart Part (int n) {
         if (parts.Count > n) return parts[n];
         return null;

@@ -12,14 +12,14 @@ public class Couch {
     public Couch () {
         this.cushions = new List<Body> ();
         for (int i=0; i<gm.maxBodyParts; i++) {
-            cushions.Add(new Body (0, 0, 0, 0));
+            cushions.Add(new Body ());
         } 
     }
 
     public Couch (int players) {
         this.cushions = new List<Body> ();
         for (int i=0; i<players; i++) {
-            cushions.Add(new Body (0, 0, 0, 0));
+            cushions.Add(new Body ());
         } 
     }
 
@@ -47,7 +47,7 @@ public class Couch {
 
     //Every cushion gathered in one
     public Body Aggregate () {
-        Body result = new Body (0, 0, 0, 0);
+        Body result = new Body ();
 
         for (int i=0; i<gm.maxBodyParts; i++) {
             result.Part(i).amount += cushions.Select(x => x.Part(i).amount).ToList().Sum();
