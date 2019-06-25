@@ -30,12 +30,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    PlayerSettings b { get { return PlayerSettings.instance; } }
+    static PlayerSettings b { get { return PlayerSettings.instance; } }
 
     public static GameManager instance;
 
     public static void NewCouch () {
-        instance.couch = Split(RandomBody(b.difficulty.minParts, b.difficulty.maxParts));
+        int partAmount = instance.maxParts.amountOfParts;
+        Difficulty dif = b.difficulty;
+        instance.couch = Split(RandomBody((int)(partAmount*dif.minParts), (int)(partAmount*dif.maxParts)));
     }
 
     // Generates a random body containing min to max bodyparts
@@ -46,7 +48,7 @@ public class GameManager : MonoBehaviour {
             Debug.LogError ("Error : You're trying to put too many body parts ("+max+") in the couch ("+
             instance.maxParts.amountOfParts+" body parts total)");
         } else {
-            int amountOfPartsToSplit = Random.Range (min, max+1) - body.Aggregate();
+            int amountOfPartsToSplit = Random.Range (min, max+1) - body.amountOfParts;
 
             // List is {0, 1, 2, 3... }
             List<int> possibleParts = new List<int>();
