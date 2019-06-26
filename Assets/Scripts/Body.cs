@@ -4,12 +4,12 @@ using UnityEngine;
 using System.Linq;
 
 [System.Serializable]
-public class Body {
+public class Cushion {
     // 0 = hands, 1 = feet, 2 = butts, 3 = heads
     public List<BodyPart> parts;
     private GameManager gm { get { return GameManager.instance; } }
 
-    public Body (int hands, int feet, int butts, int heads) {
+    public Cushion (int hands, int feet, int butts, int heads) {
         this.parts = new List<BodyPart> () {
             new BodyPart (BodyPartType.HANDS, hands),
             new BodyPart (BodyPartType.FEET, feet),
@@ -18,7 +18,7 @@ public class Body {
         } ;
     }
 
-    public Body () {
+    public Cushion () {
         this.parts = new List<BodyPart> () {
             new BodyPart (BodyPartType.HANDS, 0),
             new BodyPart (BodyPartType.FEET, 0),
@@ -50,7 +50,7 @@ public class Body {
     public int amountOfParts { get { return parts.Select(x => x.amount).ToList().Sum(); } }
 
     //Returns a classic human body (2 hands, 2 feet, 1 head, 1 butt)
-    public static Body classicHuman { get { return new Body (2, 2, 1, 1); } }
+    public static Cushion classicHuman { get { return new Cushion (2, 2, 1, 1); } }
 
     //Display the list of all BodyParts (1 per line)
     public string Display () {

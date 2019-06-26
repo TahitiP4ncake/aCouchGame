@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerButton : MonoBehaviour {
+public class PlayerButtonOld : MonoBehaviour {
     [Range(0,5)]
     public int amountOfPlayers;
     public EventTrigger eventTrigger;

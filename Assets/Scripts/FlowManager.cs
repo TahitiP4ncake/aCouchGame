@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlowManager : MonoBehaviour {
+public class FlowManager : MonoSingleton<FlowManager> {
     public enum S { MENU, PLAY };
     public S state = S.MENU;
 
-    public static FlowManager instance;
+    private CouchManager couchManager { get { return CouchManager.instance; } }
 
     private void Update () {
         if (state == S.MENU && Input.touchCount == 1) {
             //assign number of players
-            GameManager.NewCouch();
+            GoToPlay ();
         }
 
         if (state == S.PLAY && Input.touchCount == 1){
-            GameManager.NewCouch();
+            couchManager.UpdatePlayCouch ();
         }
 
         if (state == S.PLAY && Input.touchCount == 2) {
+            GoToMenu ();
         }
     }
 
@@ -28,5 +29,6 @@ public class FlowManager : MonoBehaviour {
 
     private void GoToPlay () {
         state = S.PLAY;
+        couchManager.UpdatePlayCouch ();
     }
 }

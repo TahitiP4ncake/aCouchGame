@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSettings : MonoBehaviour {
-    public static PlayerSettings instance;
+public class PlayerSettings : MonoSingleton<PlayerSettings> {
     private GameManager gm { get { return GameManager.instance; } }
+    private Couch playCouch { get { return CouchManager.instance.playCouch; } }
 
     public Couch players;
 
@@ -20,12 +20,12 @@ public class PlayerSettings : MonoBehaviour {
     }
 
     public void DecreasePlayerBodyPart (int playerIndex, BodyPartType type) {
-        BodyPart part = gm.couch.Cushion(playerIndex).Part(type);
+        BodyPart part = playCouch.Cushion(playerIndex).Part(type);
         if (part.amount > 0) part.amount --;
     }
 
     public void IncreasePlayerBodyPart (int playerIndex, BodyPartType type) {
-        BodyPart part = gm.couch.Cushion(playerIndex).Part(type);
-        if (part.amount < Body.classicHuman.Part(part.type).amount) part.amount ++;
+        BodyPart part = playCouch.Cushion(playerIndex).Part(type);
+        if (part.amount < Cushion.classicHuman.Part(part.type).amount) part.amount ++;
     }
 }
