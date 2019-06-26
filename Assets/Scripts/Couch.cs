@@ -11,8 +11,7 @@ public class Couch {
 
     public Couch () {
         this.cushions = new List<Cushion> ();
-        Debug.LogError("sdzcfvd");
-        for (int i=0; i<gm.maxBodyParts; i++) {
+        for (int i=0; i<GameManager.maxBodyParts; i++) {
             cushions.Add(new Cushion ());
         }
     }
@@ -26,7 +25,7 @@ public class Couch {
 
     public Couch (Cushion body) {
         this.cushions = new List<Cushion> ();
-        for (int i=0; i<gm.maxBodyParts; i++) {
+        for (int i=0; i<GameManager.maxBodyParts; i++) {
             cushions.Add(body); 
         } 
     }
@@ -50,7 +49,7 @@ public class Couch {
     public Cushion Aggregate () {
         Cushion result = new Cushion ();
 
-        for (int i=0; i<gm.maxBodyParts; i++) {
+        for (int i=0; i<GameManager.maxBodyParts; i++) {
             result.Part(i).amount += cushions.Select(x => x.Part(i).amount).ToList().Sum();
         }
 

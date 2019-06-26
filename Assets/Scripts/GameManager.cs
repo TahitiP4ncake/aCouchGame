@@ -13,8 +13,8 @@ public class GameManager : MonoSingleton<GameManager> {
     //Class body : bools leftArm, rightArm..
 
     public int amountOfPlayers;
-    public int maxBodyParts = 4;
-    public int maxCushions = 4;
+    public static readonly int maxBodyParts = 4;
+    public static readonly int maxCushions = 4;
     public Cushion maxParts {
         get {
             return new Cushion (

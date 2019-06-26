@@ -5,18 +5,19 @@ using UnityEngine;
 public class CouchManager : MonoSingleton<CouchManager> {
     public Couch playCouch;
 
-    static GameManager gm { get { return GameManager.instance; } }
+    private GameManager gm { get { return GameManager.instance; } }
 
-    static PlayerSettings settings { get { return PlayerSettings.instance; } }
+    private PlayerSettings settings { get { return PlayerSettings.instance; } }
 
     public void UpdatePlayCouch () {
         int partAmount = gm.maxParts.amountOfParts;
         Difficulty dif = settings.difficulty;
-        instance.playCouch = Split(RandomBody((int)(partAmount*dif.minParts), (int)(partAmount*dif.maxParts)));
+        playCouch = Split(RandomBody((int)(partAmount*dif.minParts), (int)(partAmount*dif.maxParts)));
     }
 
     // Generates a random body containing min to max bodyparts
     private Cushion RandomBody (int min, int max) {
+        Debug.Log("blehhh");
         Cushion body = new Cushion (0, 2, 0, 0); //2 feet for stability
 
         if (max > gm.maxParts.amountOfParts) {
@@ -27,7 +28,7 @@ public class CouchManager : MonoSingleton<CouchManager> {
 
             // List is {0, 1, 2, 3... }
             List<int> possibleParts = new List<int>();
-            for (int i=0; i<gm.maxBodyParts; i++) {
+            for (int i=0; i<GameManager.maxBodyParts; i++) {
                 possibleParts.Add(i);
             }
 
@@ -48,11 +49,12 @@ public class CouchManager : MonoSingleton<CouchManager> {
     
     // Repartit au hasard une liste de bodypart dans un couch
     private Couch Split (Cushion allParts) { 
-        Couch tmp = new Couch (0);
+        Debug.Log("bleh");
+        Couch tmp = new Couch ();
 
-        for (int i=0; i<gm.maxBodyParts; i++) { //Pour chaque type de bodypart
+        for (int i=0; i<GameManager.maxBodyParts; i++) { //Pour chaque type de bodypart
             for (int j=0; j<allParts.parts[i].amount; j++) { //Pour chaque bodypart de ce type
-                int ran = Random.Range(0,gm.maxCushions);
+                int ran = Random.Range(0,GameManager.maxCushions);
                 tmp.cushions[ran].parts[i].amount ++; //Ajouter le même bodypart a un coussin random du resultat
             }
         }

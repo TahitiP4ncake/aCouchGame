@@ -56,7 +56,7 @@ public class Cushion {
     public string Display () {
         string result = "";
 
-        for (int i=0; i<gm.maxBodyParts; i++) {
+        for (int i=0; i<GameManager.maxBodyParts; i++) {
             string part = Part(i).Display();
             if (result != "" && part != "") result += "\n";
             result += part;
