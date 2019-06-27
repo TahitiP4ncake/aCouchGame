@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 public class CouchManager : MonoSingleton<CouchManager> {
     public Couch playCouch;
+    public List<TextMeshProUGUI> texts;
 
     private GameManager gm { get { return GameManager.instance; } }
 
     private PlayerSettings settings { get { return PlayerSettings.instance; } }
 
     public void UpdatePlayCouch () {
-        int partAmount = settings.players.Select(x => x.ToCushion().amountOfParts).ToList().Sum();
+        //int partAmount = settings.players.Select(x => x.ToCushion().amountOfParts).ToList().Sum();
+        int partAmount = gm.maxParts.amountOfParts;
         Difficulty dif = settings.difficulty;
+
+
         playCouch = Split(RandomBody((int)(partAmount*dif.minParts), (int)(partAmount*dif.maxParts)));
+        List<string> textsList = playCouch.Display();
+        for (int i=0; i<texts.Count; i++) {
+            texts[i].text = textsList[i];
+        }
     }
 
     // Generates a random body containing min to max bodyparts
@@ -49,7 +58,6 @@ public class CouchManager : MonoSingleton<CouchManager> {
     
     // Repartit au hasard une liste de bodypart dans un couch
     private Couch Split (Cushion allParts) { 
-        Debug.Log("bleh");
         Couch tmp = new Couch ();
 
         for (int i=0; i<GameManager.maxBodyParts; i++) { //Pour chaque type de bodypart

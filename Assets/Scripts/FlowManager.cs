@@ -12,15 +12,7 @@ public class FlowManager : MonoSingleton<FlowManager> {
     private CouchManager couchManager { get { return CouchManager.instance; } }
 
     private void Update () {
-        if (state == S.MENU && Touch ()) {
-            GoToPlay ();
-        }
-
-        if (state == S.PLAY && Touch ()){
-            couchManager.UpdatePlayCouch ();
-        }
-
-        if (state == S.PLAY && DoubleTouch ()) {
+        if (state == S.PLAY && DoubleTap ()) {
             GoToMenu ();
         }
     }
@@ -44,11 +36,23 @@ public class FlowManager : MonoSingleton<FlowManager> {
         }
     }
 
-    private bool Touch () {
-        return (Input.touchCount == 1 || Input.GetMouseButtonDown(0));
+    private bool DoubleTap () {
+        return (Input.touchCount == 2 || Input.GetMouseButtonUp(1));
     }
 
-    private bool DoubleTouch () {
-        return (Input.touchCount == 2 || Input.GetMouseButtonDown(1));
+    public void TwoPlayerTouch () { Touch (2); }
+    public void ThreePlayerTouch () { Touch (3); }
+    public void FourPlayerTouch () { Touch (4); }
+    public void FivePlayerTouch () { Touch (5); }
+
+    public void Touch (int amountOfPlayers) {
+        if (state == S.MENU) {
+            GameManager.instance.amountOfPlayers = amountOfPlayers;
+            GoToPlay ();
+        }
+
+        if (state == S.PLAY){
+            couchManager.UpdatePlayCouch ();
+        }
     }
 }

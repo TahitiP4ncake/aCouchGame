@@ -25,13 +25,4 @@ public class GameManager : MonoSingleton<GameManager> {
             );
         }
     }
-
-    public void TwoPlayers () { SetPlayers(2); }
-    public void ThreePlayers () { SetPlayers(3); }
-    public void FourPlayers () { SetPlayers(4); }
-    public void FivePlayers () { SetPlayers(5); }
-
-    public void SetPlayers (int amount) {
-        amountOfPlayers = amount;
-    }
 }

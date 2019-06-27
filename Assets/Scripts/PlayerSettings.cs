@@ -11,7 +11,6 @@ public class PlayerSettings : MonoSingleton<PlayerSettings> {
     public Difficulty medium;
     public Difficulty hard;
 
-    [HideInInspector]
     public Difficulty difficulty;
 
     public List<Body> players;
