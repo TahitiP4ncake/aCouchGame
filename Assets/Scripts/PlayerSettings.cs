@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerSettings : MonoSingleton<PlayerSettings> {
     private GameManager gm { get { return GameManager.instance; } }
     private Couch playCouch { get { return CouchManager.instance.playCouch; } }
-
-    public Couch players;
 
     public Difficulty easy;
     public Difficulty medium;
@@ -15,17 +14,18 @@ public class PlayerSettings : MonoSingleton<PlayerSettings> {
     [HideInInspector]
     public Difficulty difficulty;
 
-    public void InitiatePlayers () {
-        players = new Couch (gm.amountOfPlayers);
+    public List<Body> players;
+
+    public Cushion maxParts {
+        get {
+            return new Cushion (
+                players.Select(x => x.ToCushion().AmountOf(BodyPartType.HANDS)).ToList().Sum(),
+                players.Select(x => x.ToCushion().AmountOf(BodyPartType.FEET)).ToList().Sum(),
+                players.Select(x => x.ToCushion().AmountOf(BodyPartType.BUTTS)).ToList().Sum(),
+                players.Select(x => x.ToCushion().AmountOf(BodyPartType.HEADS)).ToList().Sum()
+            );
+        }
     }
 
-    public void DecreasePlayerBodyPart (int playerIndex, BodyPartType type) {
-        BodyPart part = playCouch.Cushion(playerIndex).Part(type);
-        if (part.amount > 0) part.amount --;
-    }
 
-    public void IncreasePlayerBodyPart (int playerIndex, BodyPartType type) {
-        BodyPart part = playCouch.Cushion(playerIndex).Part(type);
-        if (part.amount < Cushion.classicHuman.Part(part.type).amount) part.amount ++;
-    }
 }

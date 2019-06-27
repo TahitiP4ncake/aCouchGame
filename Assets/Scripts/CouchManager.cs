@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CouchManager : MonoSingleton<CouchManager> {
     public Couch playCouch;
@@ -10,14 +11,13 @@ public class CouchManager : MonoSingleton<CouchManager> {
     private PlayerSettings settings { get { return PlayerSettings.instance; } }
 
     public void UpdatePlayCouch () {
-        int partAmount = gm.maxParts.amountOfParts;
+        int partAmount = settings.players.Select(x => x.ToCushion().amountOfParts).ToList().Sum();
         Difficulty dif = settings.difficulty;
         playCouch = Split(RandomBody((int)(partAmount*dif.minParts), (int)(partAmount*dif.maxParts)));
     }
 
     // Generates a random body containing min to max bodyparts
     private Cushion RandomBody (int min, int max) {
-        Debug.Log("blehhh");
         Cushion body = new Cushion (0, 2, 0, 0); //2 feet for stability
 
         if (max > gm.maxParts.amountOfParts) {
