@@ -4,9 +4,6 @@ using UnityEngine;
 using System.Linq;
 
 public class PlayerSettings : MonoSingleton<PlayerSettings> {
-    private GameManager gm { get { return GameManager.instance; } }
-    private Couch playCouch { get { return CouchManager.instance.playCouch; } }
-
     public Difficulty easy;
     public Difficulty medium;
     public Difficulty hard;

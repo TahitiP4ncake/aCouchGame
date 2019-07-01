@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FlowManager : MonoSingleton<FlowManager> {
     public enum S { MENU, PLAY };
@@ -9,11 +10,15 @@ public class FlowManager : MonoSingleton<FlowManager> {
     public List<GameObject> menuTexts;
     public List<GameObject> gameTexts;
 
+    public GameObject twoPlayerPanel, threePlayerPanel, fourPlayerPanel, fivePlayerPanel;
+
     private CouchManager couchManager { get { return CouchManager.instance; } }
 
     private void Update () {
-        if (state == S.PLAY && DoubleTap ()) {
-            GoToMenu ();
+        if (Input.touchCount == 2 || Input.GetMouseButtonUp(1)) {
+            if (state == S.PLAY) {
+                GoToMenu ();
+            }
         }
     }
 
@@ -23,7 +28,8 @@ public class FlowManager : MonoSingleton<FlowManager> {
         SetVisible(gameTexts, false);
     }
 
-    private void GoToPlay () {
+    private void GoToPlay (int amountOfPlayers) {
+        GameManager.instance.amountOfPlayers = amountOfPlayers;
         state = S.PLAY;
         couchManager.UpdatePlayCouch ();
         SetVisible(menuTexts, false);
@@ -36,19 +42,9 @@ public class FlowManager : MonoSingleton<FlowManager> {
         }
     }
 
-    private bool DoubleTap () {
-        return (Input.touchCount == 2 || Input.GetMouseButtonUp(1));
-    }
-
-    public void TwoPlayerTouch () { Touch (2); }
-    public void ThreePlayerTouch () { Touch (3); }
-    public void FourPlayerTouch () { Touch (4); }
-    public void FivePlayerTouch () { Touch (5); }
-
-    public void Touch (int amountOfPlayers) {
+    public void TouchPlayerPanel (int playerIndex) {
         if (state == S.MENU) {
-            GameManager.instance.amountOfPlayers = amountOfPlayers;
-            GoToPlay ();
+            GoToPlay (playerIndex);
         }
 
         if (state == S.PLAY){

@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Linq;
 
 public class GameManager : MonoSingleton<GameManager> {
-    //TODO
-
     public int amountOfPlayers;
     public static readonly int maxBodyParts = 4;
     public static readonly int maxCushions = 4;
